@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kpakpagoo</title>
+<meta name="description" content="A small guided course in Eleme, an Ogoni language of Rivers State, Nigeria. Built only from sourced lessons, with every word traced back to where it came from.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewport='0 0 32 32'><text y='26' font-size='26'>ɔ</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400&family=Nunito+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top" id="head">
+  <div class="top-in">
+    <div class="mast">
+      <span class="logo">Kpakpagoo<i aria-hidden="true">.</i></span>
+      <div class="pills" aria-label="Your progress">
+        <p class="pill"><b id="m-unit">1</b><span>unit</span></p>
+        <p class="pill"><b id="m-held">0</b><span>known</span></p>
+        <p class="pill"><b id="m-days">0</b><span>days</span></p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button type="button" role="tab" aria-selected="true" aria-controls="p-learn" data-tab="learn">Learn</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-practice" data-tab="practice">Practice</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-alphabet" data-tab="alphabet">Alphabet</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-mine" data-tab="mine">My words</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-about" data-tab="about">About the words</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel" id="p-learn" role="tabpanel" aria-label="Learn"></section>
+  <section class="panel" id="p-practice" role="tabpanel" aria-label="Practice" hidden></section>
+  <section class="panel" id="p-alphabet" role="tabpanel" aria-label="Alphabet" hidden></section>
+  <section class="panel" id="p-mine" role="tabpanel" aria-label="My words" hidden></section>
+  <section class="panel" id="p-about" role="tabpanel" aria-label="About the words" hidden></section>
+</main>
+
+<footer class="wrap">
+  <p class="foot-note" id="footnote">Saved in this browser</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
