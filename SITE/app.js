@@ -259,6 +259,9 @@ function makeSteps(u){
   return steps;
 }
 
+function cvar(c){return "--c:var("+c+");--on-c:var(--on"+c.slice(3)+")"}
+function gvar(c){return "--go:var("+c+");--go-on:var(--on"+c.slice(3)+")"}
+
 /* ============================================================
    LEARN: list + player
    ============================================================ */
@@ -276,7 +279,7 @@ function renderLearn(){
         locked=u.n>state.unlocked,
         resuming=state.pos&&state.pos.u===u.n&&!fin,
         current=!fin&&!locked;
-    h+='<div class="unit'+(current?" on":"")+(fin?" fin":"")+(locked?" locked":"")+'" style="--c:var('+u.c+')">'+
+    h+='<div class="unit'+(current?" on":"")+(fin?" fin":"")+(locked?" locked":"")+'" style="'+cvar(u.c)+'">'+
       '<span class="unum">'+u.n+'</span>'+
       '<span><span class="utitle">'+esc(u.t)+'</span>'+
       '<span class="usub">'+esc(u.s)+' · '+u.items.length+' words'+(fin?" · done":"")+'</span></span>'+
@@ -366,11 +369,11 @@ function renderStep(){
     if(added){state.doneUnits.push(u.n);state.unlocked=Math.max(state.unlocked,u.n+1)}
     state.pos=null;countDay();save();updatePills();
     var nxt=UNITS[u.n];
-    body='<div class="fin" style="--c:var('+u.c+')"><div class="finnum">'+u.n+'</div>'+
+    body='<div class="fin" style="'+cvar(u.c)+'"><div class="finnum">'+u.n+'</div>'+
       '<p class="fintitle el">Ɔwanɛnu</p>'+
       '<p class="finsub">Unit '+u.n+' finished. Its '+u.items.length+' words are now in Practice, and they '+
       'will come back over the next few days so they stick.</p><div class="finrow">'+
-      (nxt&&state.doneUnits.indexOf(nxt.n)<0?'<button class="btn go" style="--go:var('+nxt.c+')" id="nu">Start unit '+nxt.n+'</button>':'')+
+      (nxt&&state.doneUnits.indexOf(nxt.n)<0?'<button class="btn go" style="'+gvar(nxt.c)+'" id="nu">Start unit '+nxt.n+'</button>':'')+
       '<button class="btn" id="bk">Back to the units</button>'+
       '<button class="btn" id="pr">Practice now</button></div></div>';
     el.innerHTML=body;
@@ -381,7 +384,7 @@ function renderStep(){
     return;
   }
 
-  el.innerHTML='<div class="play" style="--c:var('+u.c+')">'+head+body+'</div>';
+  el.innerHTML='<div class="play" style="'+cvar(u.c)+'">'+head+body+'</div>';
   var q=document.getElementById("quit");if(q)q.onclick=quitRun;
   var nx=document.getElementById("nx");if(nx)nx.onclick=advance;
 
@@ -476,7 +479,7 @@ function renderPractice(){
   var meta='<div class="fmeta"><span>'+(cur.u?"Unit "+cur.u:"Your word")+'</span>'+
     '<span>'+(c.n>0?"seen "+c.seen+"×":"new")+'</span></div>';
   el.innerHTML=switcher()+dirs+'<div class="track"><i style="width:'+pct+'%"></i></div>'+
-   '<div class="flip'+(flipped?' on':'')+'" style="--c:var('+(cur.c||"--u1")+')"><div class="flip-in">'+
+   '<div class="flip'+(flipped?' on':'')+'" style="'+cvar(cur.c||"--u1")+'"><div class="flip-in">'+
     '<div class="face front">'+meta+'<p class="q'+(prod?' en':' el')+'">'+esc(prod?cur.m:cur.e)+'</p>'+
       '<div class="foot"><div class="tapme" id="flipme">'+(prod?"Show the Eleme":"Show what it means")+'</div></div></div>'+
     '<div class="face back">'+meta+'<p class="a'+(prod?' el':' en')+'">'+esc(prod?cur.e:cur.m)+'</p>'+
@@ -514,7 +517,7 @@ function renderGame(el){
   if(!gCur)newGame();
   el.innerHTML=switcher()+
    '<p class="lede">Every sentence here is printed whole in a lesson, so you are never asked to invent Eleme.</p>'+
-   '<div class="game" style="--c:var(--u6)"><p class="gtarget">'+esc(gCur.m)+'</p>'+
+   '<div class="game" style="'+cvar("--u6")+'"><p class="gtarget">'+esc(gCur.m)+'</p>'+
    '<div class="slot">'+gSlot.map(function(t,i){
      return '<button class="chip el" data-back="'+i+'">'+esc(t.w)+'</button>'}).join("")+'</div>'+
    '<div class="bank">'+gBank.map(function(t,i){
@@ -522,8 +525,8 @@ function renderGame(el){
    '<p class="verdict '+(gRes==="ok"?"ok":gRes==="no"?"no":"")+'" style="margin-top:16px">'+
      (gRes==="ok"?'That is it.':gRes==="no"?'Not the order the lesson gives.':'&nbsp;')+'</p>'+
    '<div style="display:flex;gap:9px;flex-wrap:wrap">'+
-     (gBank.length===0&&gRes!=="ok"?'<button class="btn go" style="--go:var(--u6)" id="chk">Check it</button>':'')+
-     (gRes==="ok"?'<button class="btn go" style="--go:var(--u6)" id="nxt">Next one</button>':'')+
+     (gBank.length===0&&gRes!=="ok"?'<button class="btn go" style="'+gvar("--u6")+'" id="chk">Check it</button>':'')+
+     (gRes==="ok"?'<button class="btn go" style="'+gvar("--u6")+'" id="nxt">Next one</button>':'')+
      '<button class="btn sm" id="showme">Show me</button>'+
      '<button class="btn sm" id="skip">Skip</button></div></div>';
   wireSwitch(el);
@@ -549,13 +552,13 @@ function renderAlphabet(){
   '<p class="lede">36 letters. Pairs like <span class="el">kp</span> and <span class="el">gb</span> count as '+
   'one letter each. A letter always sounds the same, wherever it turns up.</p>'+
   '<div class="grid">'+ALPHA.map(function(a,i){
-    return '<div class="let" style="--c:var('+UC[i%7]+')"><b>'+a[0]+'</b><span class="say">'+esc(a[1])+'</span>'+
+    return '<div class="let'+(a[0].length>1?" di":"")+'"><b>'+a[0]+'</b><span class="say">'+esc(a[1])+'</span>'+
       (a[2]?'<span class="ex"><em>'+esc(a[2])+'</em> · '+esc(a[3])+'</span>':'')+'</div>'}).join("")+'</div>'+
   '<h2 class="sec" style="margin-top:30px">Vowels through the nose</h2>'+
   '<p class="lede">Same vowel, with air going through the nose too, the way French <em>an</em> and <em>on</em> '+
   'work. Four of these five have no example anywhere in the lessons.</p>'+
   '<div class="grid">'+NASAL.map(function(a){
-    return '<div class="let" style="--c:var(--u5)"><b>'+a[0]+'</b>'+
+    return '<div class="let na"><b>'+a[0]+'</b>'+
       (a[1]?'<span class="ex"><em>'+esc(a[1])+'</em> · '+esc(a[2])+'</span>':'<span class="ex">no example yet</span>')+
       '</div>'}).join("")+'</div>'+
   '<div class="box" style="margin-top:24px"><h3>One honest warning</h3>'+
@@ -582,10 +585,10 @@ function renderMine(){
      '<div class="keys">'+KEYS.map(function(k){return '<button type="button" data-k="'+k+'">'+k+'</button>'}).join("")+'</div></div>'+
      '<div><label for="f-en">What it means</label><input id="f-en" autocomplete="off" placeholder="butterfly"></div>'+
      '<div><label for="f-note">Where it came from (optional)</label><input id="f-note" autocomplete="off" placeholder="my friend Kingsley"></div>'+
-     '<div><button class="btn go" style="--go:var(--u5)" type="submit">Add it</button></div>'+
+     '<div><button class="btn go" style="'+gvar("--u5")+'" type="submit">Add it</button></div>'+
    '</form></div>';
   h+=(state.mine.length
-    ?'<h3 style="font-family:\'Baloo 2\',sans-serif;font-weight:700;font-size:19px;margin:0 0 10px">'+
+    ?'<h3 style="font-weight:700;font-size:19px;margin:0 0 10px;letter-spacing:-.02em">'+
       state.mine.length+' word'+(state.mine.length===1?'':'s')+' you have added</h3>'+
      '<div class="words" style="margin-bottom:26px">'+state.mine.map(function(m){
        return '<div class="w"><div class="e el">'+esc(m.e)+'</div><div class="m">'+esc(m.m)+'</div>'+
