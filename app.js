@@ -711,6 +711,23 @@ function updatePills(){
   document.getElementById("m-held").textContent=countKnown();
   document.getElementById("m-days").textContent=state.days||0;
 }
+/* --- theme: auto (suit le systeme), light, ou dark. Garde dans son
+       propre jeton localStorage, pas dans l'etat de progression. --- */
+var TKEY=LS+"-theme", TORDER=["auto","light","dark"], TLABEL={auto:"Auto",light:"Light",dark:"Dark"};
+function themeNow(){try{return localStorage.getItem(TKEY)||"auto"}catch(e){return "auto"}}
+function applyTheme(t){
+  var r=document.documentElement;
+  if(t==="light"||t==="dark")r.setAttribute("data-theme",t); else r.removeAttribute("data-theme");
+  var b=document.getElementById("theme");
+  if(b){b.textContent=TLABEL[t];
+    b.setAttribute("aria-label","Colour theme: "+TLABEL[t]+". Tap to change.")}
+}
+function cycleTheme(){
+  var t=TORDER[(TORDER.indexOf(themeNow())+1)%TORDER.length];
+  try{localStorage.setItem(TKEY,t)}catch(e){}
+  applyTheme(t);
+}
+
 var RENDER={learn:renderLearn,practice:renderPractice,alphabet:renderAlphabet,mine:renderMine,about:renderAbout};
 function show(tab){
   if(tab!=="learn"&&run){state.pos={u:run.u.n,i:run.i};run=null;save();
@@ -724,6 +741,8 @@ function show(tab){
 }
 Array.prototype.forEach.call(document.querySelectorAll("nav.tabs button"),function(b){
   b.onclick=function(){show(b.dataset.tab)}});
+applyTheme(themeNow());
+document.getElementById("theme").onclick=cycleTheme;
 document.addEventListener("click",function(ev){
   if(ev.target&&ev.target.id==="nx2")advance();
 });

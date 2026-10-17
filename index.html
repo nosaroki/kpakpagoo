@@ -11,6 +11,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400&display=swap">
 <link rel="stylesheet" href="styles.css">
+<script>
+/* Applique le theme retenu avant le premier rendu. Sans cela, la page
+   s'affiche une fraction de seconde dans le theme du systeme avant de
+   basculer, ce qui produit un eclair desagreable a chaque chargement. */
+try{
+  var t=localStorage.getItem("eleme-kpakpagoo-v3-theme");
+  if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);
+}catch(e){}
+</script>
 </head>
 <body>
 
@@ -22,6 +31,7 @@
         <p class="pill"><b id="m-unit">1</b><span>unit</span></p>
         <p class="pill"><b id="m-held">0</b><span>known</span></p>
         <p class="pill"><b id="m-days">0</b><span>days</span></p>
+        <button type="button" class="theme" id="theme" aria-label="Change the colour theme">Auto</button>
       </div>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">

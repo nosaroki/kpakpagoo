@@ -74,7 +74,11 @@ a{color:var(--u2)}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);
   border-bottom:2px solid var(--ink)}
 .top-in{max-width:660px;margin:0 auto;padding:13px 16px 0}
-.mast{display:flex;align-items:center;gap:10px}
+.mast{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.theme{background:var(--soft);border-radius:var(--r-sm);padding:5px 10px;font-size:10px;
+  font-weight:700;color:var(--ink2);letter-spacing:.07em;text-transform:uppercase;line-height:1.6}
+.theme:hover{color:var(--ink)}
+.theme:active{transform:translateY(1px)}
 .logo{font-weight:800;font-size:27px;line-height:1;letter-spacing:-.03em}
 .logo i{font-style:normal;color:var(--u2)}
 .pills{margin-left:auto;display:flex;gap:5px}
